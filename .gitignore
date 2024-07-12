@@ -3,3 +3,4 @@
 **/*.smdh
 build
 **/*.~undo-tree~
+.direnv
