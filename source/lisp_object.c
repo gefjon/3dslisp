@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <3ds.h>
 #include "lisp_object.h"
 
@@ -31,7 +32,8 @@ heap_object_tag get_heap_object_tag(heap_object *obj) {
 }
 
 heap_object *inner_pointer_as_heap_object(void *inner_addr) {
-  void *outer_addr = inner_addr - sizeof(object_tag);
+  void *outer_addr = inner_addr - offsetof(typeof(heap_object), as_tombstone);
+  printf("inner_pointer_as_heap_object: inner is %p, outer is %p\n", inner_addr, outer_addr);
   return outer_addr;
 }
 

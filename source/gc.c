@@ -30,9 +30,10 @@ u32 increment_to_align_4(u32 addr) {
 }
 
 heap_object  *allocate_without_gc(u32 length_in_bytes) {
+  gc_alloc_pointer = (void *) increment_to_align_4((u32) gc_alloc_pointer);
   void * new_object = gc_alloc_pointer;
-  // FIXME: ensure gc_alloc_pointer remains aligned
   gc_alloc_pointer += length_in_bytes;
+  gc_alloc_pointer = (void *) increment_to_align_4((u32) gc_alloc_pointer);
   return new_object;  
 }
 

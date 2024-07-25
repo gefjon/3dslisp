@@ -18,17 +18,30 @@ int main(int argc, char* argv[])
         printf("After gc init\n");
 
         lisp_object objs[2] = {0};
-        objs[0] = tag_array(allocate_array(NULL, 0, 2, (lisp_object) 0));
+        array *arr = allocate_array(NULL, 0, 2, (lisp_object) 0);
+        printf("Allocaton 0: raw array is %p\n", arr);
+        objs[0] = tag_array(arr);
 
         printf("After allocation 0\n");
+        printf("objs[0] raw = %p\n", objs[0]);
+        fputs("objs[0] = ", stdout);
+        print_object(stdout, objs[0]);
+        putchar('\n');
 
         objs[1] = tag_string(allocate_string(objs, 1, 16, 'a'));
 
         printf("After allocation 1\n");
+        printf("objs[1] raw = %p\n", objs[1]);
+        fputs("objs[1] = ", stdout);
+        print_object(stdout, objs[1]);
+        putchar('\n');
 
         array_set_unchecked(lisp_object_as_array(objs[0]), 0, objs[1]);
 
         printf("After storing 1 into 0[0]\n");
+        fputs("objs[0] = ", stdout);
+        print_object(stdout, objs[0]);
+        putchar('\n');
 
         lisp_object obj_2 = tag_string(allocate_string(objs, 2, 16, 0));
 
@@ -37,6 +50,9 @@ int main(int argc, char* argv[])
         array_set_unchecked(lisp_object_as_array(objs[0]), 1, obj_2);
 
         printf("After storing 2 into 0[1]\n");
+        fputs("objs[0] = ", stdout);
+        print_object(stdout, objs[0]);
+        putchar('\n');
 
         garbage_collect(objs, 2);
 
@@ -47,11 +63,11 @@ int main(int argc, char* argv[])
         printf("objs[0][0]: %p\n", array_get_unchecked(lisp_object_as_array(objs[0]), 0));
         printf("objs[0][1]: %p\n", array_get_unchecked(lisp_object_as_array(objs[0]), 1));
 
-        puts("objs[0] = ");
+        fputs("objs[0] = ", stdout);
         print_object(stdout, objs[0]);
         putchar('\n');
 
-        puts("objs[1] = ");
+        fputs("objs[1] = ", stdout);
         print_object(stdout, objs[1]);
         putchar('\n');
 

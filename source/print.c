@@ -19,11 +19,13 @@ void print_object(FILE *out, lisp_object obj) {
   case OBJECT_HEAP_OBJECT:
     print_heap_object(out, lisp_object_as_pointer(obj));
     break;
+  default:
+    fail("Unexpected lisp_object_tag in print_object");
   }
 }
 
 void print_fixnum(FILE *out, fixnum fix) {
-  printf("%ld", fixnum_to_s32(fix));
+  printf("%d", fixnum_to_s32(fix));
 }
 
 void print_boolean(FILE *out, bool b) {
